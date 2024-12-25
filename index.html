@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Nilai Mahasiswa</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #022c43;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        header img {
+            width: 80px;
+            vertical-align: middle;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        header h1 {
+            display: inline;
+            margin-left: 15px;
+            font-size: 28px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #022c43;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .form-group input:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 8px rgba(79, 172, 254, 0.5);
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        .grades {
+            margin-top: 30px;
+        }
+        .grades table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .grades table, .grades th, .grades td {
+            border: 1px solid #ddd;
+        }
+        .grades th {
+            background-color: #4facfe;
+            color: white;
+            text-align: left;
+            padding: 12px;
+        }
+        .grades td {
+            padding: 10px;
+            text-align: left;
+        }
+        .grades tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .grades tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="d:\Roblox studio\download.png" alt="Logo Universitas Indonesia">
+        <h1>Sistem Nilai Mahasiswa</h1>
+    </header>
+    <div class="container">
+        <form id="gradeForm">
+            <div class="form-group">
+                <label for="name">Nama Mahasiswa</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="grade">Nilai</label>
+                <input type="text" id="grade" required>
+            </div>
+            <button type="submit">Tambahkan Nilai</button>
+        </form>
+
+        <div class="grades">
+            <h2>Daftar Nilai Mahasiswa</h2>
+            <table id="gradesTable">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Nilai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const gradeForm = document.getElementById('gradeForm');
+        const gradesTable = document.getElementById('gradesTable').querySelector('tbody');
+
+        // Load saved data from localStorage
+        const savedGrades = JSON.parse(localStorage.getItem('grades')) || [];
+        savedGrades.forEach(({ name, grade }) => addGradeToTable(name, grade));
+
+        gradeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const grade = document.getElementById('grade').value;
+
+            if (name && grade) {
+                addGradeToTable(name, grade);
+                saveGrade(name, grade);
+                gradeForm.reset();
+            }
+        });
+
+        function addGradeToTable(name, grade) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${name}</td><td>${grade}</td>`;
+            gradesTable.appendChild(row);
+        }
+
+        function saveGrade(name, grade) {
+            savedGrades.push({ name, grade });
+            localStorage.setItem('grades', JSON.stringify(savedGrades));
+        }
+    </script>
+</body>
+</html>
